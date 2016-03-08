@@ -11,7 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160304152725) do
+ActiveRecord::Schema.define(version: 20160308134709) do
+
+  create_table "my_objects", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.float    "reward"
+    t.string   "name_type"
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "my_objects", ["user_id"], name: "index_my_objects_on_user_id"
 
   create_table "tokens", force: :cascade do |t|
     t.datetime "expires_at"

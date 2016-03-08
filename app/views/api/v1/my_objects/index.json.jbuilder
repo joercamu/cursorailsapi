@@ -1,0 +1,1 @@
+json.array! @objects, :id, :title, :description, :latitude, :longitude, :user_id

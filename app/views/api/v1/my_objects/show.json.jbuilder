@@ -1,0 +1,1 @@
+json.(@object, :id, :title, :description, :latitude, :longitude, :user_id)
