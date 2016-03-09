@@ -9,7 +9,7 @@ RSpec.describe Api::V1::MyObjectsController, type: :request do
 		it { have_http_status(200) }
 		it "render list objects" do 
 			json = JSON.parse( response.body )
-			puts "\n\n #{json} \n\n"
+			# puts "\n\n #{json} \n\n"
 			expect(json.length).to eq(MyObject.count)
 		end
 	end
@@ -19,7 +19,7 @@ RSpec.describe Api::V1::MyObjectsController, type: :request do
 			@object = FactoryGirl.create(:my_object)
 			get "/api/v1/objects/#{@object.id}"
 		end
-		it { have_http_status(200) }
+		it { expect(response).to have_http_status(200) }
 		it "send object request" do
 			json = JSON.parse(response.body)
 			expect(json["id"]).to eq(@object.id)
@@ -32,12 +32,12 @@ RSpec.describe Api::V1::MyObjectsController, type: :request do
 				@token = FactoryGirl.create(:token, expires_at: DateTime.now + 10.minutes)
 				post "/api/v1/objects", { token: @token.token, object: { title:"Hola mundo", description:"cualqueir cosas que seme ocuttras"} }
 			end
-			it { have_http_status(200) }
+			it { expect(response).to have_http_status(200) }
 			# indica que el modelo incrento 1vez despues de la accion
 			it { change(MyObject,:count).by(0) }
 			it "response whit one object" do 
 				json = JSON.parse(response.body)
-				puts "\n\n #{json} \n\n"
+				# puts "\n\n #{json} \n\n"
 				expect(json["title"]).to eq("Hola mundo")
 			end
 		end
@@ -46,7 +46,7 @@ RSpec.describe Api::V1::MyObjectsController, type: :request do
 			before :each do
 				post "/api/v1/objects"
 			end
-			it { have_http_status(401) }
+			it { expect(response).to have_http_status(401) }
 
 		end
 		
@@ -57,11 +57,11 @@ RSpec.describe Api::V1::MyObjectsController, type: :request do
 			@token = FactoryGirl.create(:token, expires_at:DateTime.now + 10.minutes )
 			post "/api/v1/objects", { token: @token.token, object: { title:"Hola mundo" } }
 		end
-		it { have_http_status(422) }
+		it { expect(response).to have_http_status(422) }
 		it "repond whit errros at try save object" do
 			json = JSON.parse(response.body)
 			expect(json["errors"]).to_not be_empty
-			puts "\n\n -#{response.header}- \n\n"
+			# puts "\n\n -#{response.header}- \n\n"
 		end
 	end
 
@@ -72,10 +72,10 @@ RSpec.describe Api::V1::MyObjectsController, type: :request do
 				@object = FactoryGirl.create(:my_object, user: @token.user )
 				patch api_v1_object_path(@object), { token: @token.token , object: { title: "Nuevo title" } }
 			end
-			it { have_http_status(200) }
+			it { expect(response).to have_http_status(200) }
 			it "update object found" do 
 				json = JSON.parse(response.body)
-				puts "\n\n -#{json}- \n\n"
+				# puts "\n\n -#{json}- \n\n"
 				expect(json["title"]).to eq("Nuevo title")
 			end
 		end

@@ -1,6 +1,7 @@
 class Api::V1::MyObjectsController < ApplicationController
 	before_action :authenticate, only: [:create,:update,:destroy]
 	before_action :set_object, only: [:show,:update,:destroy]
+	before_action(only: [:update,:destroy]){ |ctrl| ctrl.authenticate_owner(@object.user) }
 	def index
 		@objects = MyObject.all
 	end
@@ -16,23 +17,16 @@ class Api::V1::MyObjectsController < ApplicationController
 		end
 	end
 	def update
-		
-		if @object.user == @current_user
-			@object.update(my_objects_params)
-			render "api/v1/my_objects/show"
-		else
-			render json: { errors: "token is does not belong" }, status: :unauthorized
-		end
+		@object.update(my_objects_params)
+		render "api/v1/my_objects/show"
 	end
 	def destroy
-		if @object.user == @current_user
-			@object.destroy
-			render json: { message: "the object was destroy"}
-		else
-			render json: { errors: "token is does not belong" }, status: :unauthorized
-		end
+		@object.destroy
+		render json: { message: "the object was destroy"}
 	end
+# ----------------------------------------------------------------------------------------------
 	private
+	
 	def set_object
 		@object = MyObject.find(params[:id])
 	end
