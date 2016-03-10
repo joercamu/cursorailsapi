@@ -2,6 +2,9 @@ class Api::V1::MyObjectsController < ApplicationController
 	before_action :authenticate, only: [:create,:update,:destroy]
 	before_action :set_object, only: [:show,:update,:destroy]
 	before_action(only: [:update,:destroy]){ |ctrl| ctrl.authenticate_owner(@object.user) }
+
+	layout "api/v1/application"
+	
 	def index
 		@objects = MyObject.all
 	end
@@ -13,7 +16,8 @@ class Api::V1::MyObjectsController < ApplicationController
 		if @object.save
 			render 'api/v1/my_objects/show'
 		else
-			render json: { errors: @object.errors.full_messages } , status: :unprocessable_entity
+			errors_array!(@object.errors.full_messages,:unprocessable_entity)
+			# render json: { errors: @object.errors.full_messages } , status: :unprocessable_entity
 		end
 	end
 	def update

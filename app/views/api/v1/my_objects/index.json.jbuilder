@@ -1,1 +1,1 @@
-json.array! @objects, :id, :title, :description, :latitude, :longitude, :user_id
+json.partial! partial: "api/v1/resource", collection:@objects, as: :resource

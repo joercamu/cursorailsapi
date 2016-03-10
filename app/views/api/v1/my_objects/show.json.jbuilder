@@ -1,1 +1,1 @@
-json.(@object, :id, :title, :description, :latitude, :longitude, :user_id)
+json.partial! "api/v1/resource", resource: @object

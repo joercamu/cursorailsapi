@@ -5,3 +5,8 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+user = User.create(email:"joercamu@gmail.com",uid:"lkn2lk2jn3423k4jnb234",provider:"facebook")
+object = MyObject.create(
+	title:"llaves de carro",
+	description:"me encontre en el restaurante la niebla en el km18 unas lleves de un carro toyota",
+	user:user)
